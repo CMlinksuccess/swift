@@ -9,8 +9,8 @@
 import UIKit
 
 
-public let kScreenWidth = UIScreen.mainScreen().bounds.width
-public let kScreenHeight = UIScreen.mainScreen().bounds.height
+public let kScreenWidth = UIScreen.main.bounds.width
+public let kScreenHeight = UIScreen.main.bounds.height
 
 class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIActionSheetDelegate,UITextViewDelegate{
 
@@ -37,20 +37,21 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         //读取文件内容
         let plistArr = NSMutableArray.init(contentsOfFile: self.readPlist())
         if plistArr != nil {
             self.array = plistArr!
         }
         
-        searchBar = UISearchBar.init(frame: CGRectMake(0, 20, kScreenWidth, 35))
+        searchBar = UISearchBar.init(frame: CGRect(x: 0, y: 20, width: kScreenWidth, height: 35))
+        searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "请输入搜索内容.."
         searchBar.delegate = self
         self.view.addSubview(searchBar)
         //..
-        textView = UITextView.init(frame:CGRectMake(10, 60, kScreenWidth - 20, 100))
-        textView.backgroundColor = UIColor.lightGrayColor()
+        textView = UITextView.init(frame:CGRect(x: 10, y: 60, width: kScreenWidth - 20, height: 100))
+        textView.backgroundColor = UIColor.lightGray
         textView.layer.cornerRadius = 10
         textView.layer.masksToBounds = true
         textView.delegate = self
@@ -59,83 +60,82 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         textView.addGestureRecognizer(tapGesture)
         self.view.addSubview(textView)
         //..
-        let button = UIButton.init(frame: CGRectMake(10, 165, 80, 30))
-        button.setTitle("加入表格", forState: .Normal)
-        button.backgroundColor = UIColor.redColor()
+        let button = UIButton.init(frame: CGRect(x: 10, y: 165, width: 80, height: 30))
+        button.setTitle("加入表格", for: UIControlState())
+        button.backgroundColor = UIColor.red
         self.setOvalView(button)
-        button.addTarget(self, action: #selector(ViewController.buttonClick), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(ViewController.buttonClick), for: .touchUpInside)
         self.view.addSubview(button)
         //..
-        let detailButton = UIButton.init(frame: CGRectMake(120, 165, 80, 30))
-        detailButton.setTitle("查看", forState: .Normal)
-        detailButton.backgroundColor = UIColor.redColor()
+        let detailButton = UIButton.init(frame: CGRect(x: 120, y: 165, width: 80, height: 30))
+        detailButton.setTitle("查看", for: UIControlState())
+        detailButton.backgroundColor = UIColor.red
         self.setOvalView(detailButton)
-        detailButton.addTarget(self, action: #selector(ViewController.createDetailView), forControlEvents: .TouchUpInside)
+        detailButton.addTarget(self, action: #selector(ViewController.createDetailView), for: .touchUpInside)
         self.view.addSubview(detailButton)
         //..
-        let cleanButton = UIButton.init(frame: CGRectMake(230, 165, 80, 30))
-        cleanButton.setTitle("清空", forState: .Normal)
-        cleanButton.backgroundColor = UIColor.redColor()
+        let cleanButton = UIButton.init(frame: CGRect(x: 230, y: 165, width: 80, height: 30))
+        cleanButton.setTitle("清空", for: UIControlState())
+        cleanButton.backgroundColor = UIColor.red
         self.setOvalView(cleanButton)
-        cleanButton.addTarget(self, action: #selector(ViewController.clean), forControlEvents: .TouchUpInside)
+        cleanButton.addTarget(self, action: #selector(ViewController.clean), for: .touchUpInside)
         self.view.addSubview(cleanButton)
         //..
-        self.tableView = UITableView.init(frame:CGRectMake(0, 200, kScreenWidth, kScreenHeight - 200))
+        self.tableView = UITableView.init(frame:CGRect(x: 0, y: 200, width: kScreenWidth, height: kScreenHeight - 200))
         self.tableView.dataSource = self;
         self.tableView.delegate = self;
         self.view.addSubview(self.tableView)
       
       // 监听键盘通知
-      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillChange), name: UIKeyboardWillShowNotification, object: nil)
-      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillChange), name: UIKeyboardWillHideNotification, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
    
    /**
-    设置椭圆
+      设置椭圆
     */
-   func setOvalView(view: UIView){
+   func setOvalView(_ view: UIView){
       
       view.layer.cornerRadius = 10
       view.layer.masksToBounds = true
-      
+   
    }
    
-   
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar){
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar){
         if issearch == true{
             return
         }
         issearch = true
         tableView.reloadData()
-        searchOver = UIButton.init(frame: CGRectMake(-45, 20, 45, 35))
-        searchOver!.setTitle("完成", forState: .Normal)
-        searchOver!.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        searchOver = UIButton.init(frame: CGRect(x: -45, y: 20, width: 45, height: 35))
+        searchOver!.setTitle("完成", for: UIControlState())
+        searchOver!.setTitleColor(UIColor.black, for: UIControlState())
         searchOver!.tag = 10000
-        searchOver!.addTarget(self, action: #selector(ViewController.searchOverAction), forControlEvents: .TouchUpInside)
+        searchOver!.addTarget(self, action: #selector(ViewController.searchOverAction), for: .touchUpInside)
         self.view.addSubview(searchOver!)
-        UIView.animateWithDuration(0.5) {
-            self.searchOver!.transform = CGAffineTransformMakeTranslation(45, 0)
-            self.searchBar.frame =  CGRectMake(45, 20, kScreenWidth - 45, 35)
-        }
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchOver!.transform = CGAffineTransform(translationX: 45, y: 0)
+            self.searchBar.frame =  CGRect(x: 45, y: 20, width: kScreenWidth - 45, height: 35)
+        }) 
     
     }
     func searchOverAction(){
         let searchOver = self.view.viewWithTag(10000)
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             
-            searchOver!.transform = CGAffineTransformIdentity
-            self.searchBar.frame =  CGRectMake(0, 20, kScreenWidth, 35)
+            searchOver!.transform = CGAffineTransform.identity
+            self.searchBar.frame =  CGRect(x: 0, y: 20, width: kScreenWidth, height: 35)
             
-            }) { (true) in
+            }, completion: { (true) in
                 self.issearch = false
                 self.searchBar.text = nil
                 self.searchBar.endEditing(false)
                 self.tableView.reloadData()
                 searchOver!.removeFromSuperview()
-        }
+        }) 
     
     }
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String){
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
      
         self.issearch = true
         let search = searchTextWithArray(array, search: searchText)
@@ -143,11 +143,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
          searchDic = search.dictionary
         self.tableView.reloadData()
     }
-
-      /**
+    /**
          键盘搜索按钮
      */
-    func searchBarSearchButtonClicked(searchBar: UISearchBar){
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
     
         searchBar.endEditing(true)
     }
@@ -162,12 +161,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     /**
          单击手势
      */
-    func handleTapGesture(tap:UITapGestureRecognizer){
+    func handleTapGesture(_ tap:UITapGestureRecognizer){
     
-      self.textView.editable = true
+      self.textView.isEditable = true
       self.textView.endEditing(true)
     }
-
     /**
          添加到表格按钮事件
      */
@@ -177,18 +175,18 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         if !textView.text.isEmpty {
             for string in self.array {
              // 去前后空格
-             let stringTrim = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-             let textViewTrim = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+             let stringTrim = (string as AnyObject).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+             let textViewTrim = textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
          
                 if stringTrim == textViewTrim {
                     if #available(iOS 8.0, *) {
-                        let alert = UIAlertController.init(title: "提示", message: "已存在，不可重复添加", preferredStyle: .Alert)
-                        let acSure = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+                        let alert = UIAlertController.init(title: "提示", message: "已存在，不可重复添加", preferredStyle: .alert)
+                        let acSure = UIAlertAction(title: "确定", style: UIAlertActionStyle.default) { (UIAlertAction) -> Void in
                            
                         }
                         
                         alert.addAction(acSure)
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        self.present(alert, animated: true, completion: nil)
                     } else {
                         let alert = UIAlertView.init(title: "提示", message: "已存在，不可重复添加", delegate: self, cancelButtonTitle: "确定")
                         alert.show()
@@ -198,10 +196,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
                 }
             }
 
-        self.array.addObject(textView.text)
+        self.array.add(textView.text)
         self.tableView.reloadData()
      
-        array.writeToFile(self.readPlist(), atomically: true)
+        array.write(toFile: self.readPlist(), atomically: true)
         self.showTip("添加成功！")
             
         }
@@ -209,19 +207,19 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     /**
         提示显示
      */
-    func showTip(text: String){
+    func showTip(_ text: String){
     
-        let window = UIApplication.sharedApplication().keyWindow
-        let tipLabel = UILabel.init(frame: CGRectMake((kScreenWidth - 120)/2, (kScreenHeight - 35 - 20)/2, 120, 35))
+        let window = UIApplication.shared.keyWindow
+        let tipLabel = UILabel.init(frame: CGRect(x: (kScreenWidth - 120)/2, y: (kScreenHeight - 35 - 20)/2, width: 120, height: 35))
         tipLabel.text = text
-        tipLabel.textColor = UIColor.whiteColor()
-        tipLabel.backgroundColor = UIColor.grayColor()
-        tipLabel.textAlignment = NSTextAlignment.Center
+        tipLabel.textColor = UIColor.white
+        tipLabel.backgroundColor = UIColor.darkGray
+        tipLabel.textAlignment = NSTextAlignment.center
         tipLabel.layer.cornerRadius = 15
         tipLabel.layer.masksToBounds = true
         window?.addSubview(tipLabel)
         
-        UIView.animateWithDuration(3, animations: {
+        UIView.animate(withDuration: 3, animations: {
             
             tipLabel.alpha = 0
             
@@ -232,7 +230,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         }
 
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
        
         if issearch {
             return searchArray.count
@@ -240,17 +238,17 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         return array.count;
     
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let indentifier = "cell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(indentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: indentifier)
         if cell == nil {
             
-            cell = UITableViewCell.init(style: .Default, reuseIdentifier: indentifier)
+            cell = UITableViewCell.init(style: .default, reuseIdentifier: indentifier)
         }
         if issearch {
-            cell!.textLabel?.text = searchArray[indexPath.row] as? String
+            cell!.textLabel?.text = searchArray[(indexPath as NSIndexPath).row] as? String
         }else{
-            cell!.textLabel?.text = array[indexPath.row] as? String
+            cell!.textLabel?.text = array[(indexPath as NSIndexPath).row] as? String
         }
       
       //增加长按手势
@@ -259,65 +257,61 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
          
         return cell!
     }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
 
             if issearch {
 
-                let numStr = searchDic?.objectForKey("\(indexPath.row)")
-                let num = numStr!.integerValue
-                self.array.removeObjectAtIndex(num)
-                array.writeToFile(self.readPlist(), atomically: true)
+               let numStr = searchDic?.object(forKey: "\((indexPath as NSIndexPath).row)") as! NSNumber
+               let num = numStr.intValue
+                self.array.removeObject(at: num)
+                array.write(toFile: self.readPlist(), atomically: true)
                
                let search = searchTextWithArray(array, search: searchBar.text!)
                self.searchArray =  NSMutableArray.init(array: search.searchResult)
                self.tableView.reloadData()
             }else{
                 
-                self.array.removeObjectAtIndex(indexPath.row)
-                array.writeToFile(self.readPlist(), atomically: true)
-               tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.array.removeObject(at: (indexPath as NSIndexPath).row)
+                array.write(toFile: self.readPlist(), atomically: true)
+               tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
             }
 
         }
     }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        tableView.deselectRow(at: indexPath, animated: true)
         if issearch {
             
-            self.textView.text = self.searchArray[indexPath.row] as! String
+            self.textView.text = self.searchArray[(indexPath as NSIndexPath).row] as! String
         }else{
             
-            self.textView.text = self.array[indexPath.row] as! String
+            self.textView.text = self.array[(indexPath as NSIndexPath).row] as! String
         }
-      self.textView.editable = false
-      self.textView.dataDetectorTypes = UIDataDetectorTypes.All
-      self.textView.selectable = true
-        self.currentRow = indexPath.row
+        self.currentRow = (indexPath as NSIndexPath).row
+        self.dataDetector()
       
     }
-   /**
-     增加长按事件
+    /**
+        增加长按事件
     */
-   func longPressAction(longPress:UILongPressGestureRecognizer){
-      if longPress.state == UIGestureRecognizerState.Ended{
+   func longPressAction(_ longPress:UILongPressGestureRecognizer){
+      textView.endEditing(true)
+      if longPress.state == UIGestureRecognizerState.ended{
          
          return;
          
-      } else if longPress.state == UIGestureRecognizerState.Began{
+      } else if longPress.state == UIGestureRecognizerState.began{
          
-      //获取点击的行
-     let cellPoint = longPress.locationInView(self.tableView)
-     let cellIndexPath = self.tableView.indexPathForRowAtPoint(cellPoint)
-   
-      //调用系统自带分享功能
-      let shareCtrl = UIActivityViewController.init(activityItems: [array[cellIndexPath!.row] as! String, NSURL.init(string: "http://www.baidu.com")!], applicationActivities: nil)
-      //禁止显示类型
-      // shareCtrl.excludedActivityTypes = [UIActivityTypeAirDrop,UIActivityTypeCopyToPasteboard,UIActivityTypeAddToReadingList]
-      self.presentViewController(shareCtrl, animated: true, completion: nil)
-      
+         let cellPoint = longPress.location(in: self.tableView)
+         let cellIndexPath = self.tableView.indexPathForRow(at: cellPoint)
+         
+          //调用系统自带分享功能
+         let shareCtrl = UIActivityViewController.init(activityItems: [array[(cellIndexPath! as NSIndexPath).row] as! String, URL.init(string: "http://www.baidu.com")!], applicationActivities: nil)
+         //默认都显示，以下声明不要显示的分享平台
+         //shareCtrl.excludedActivityTypes = [UIActivityType.postToFacebook,UIActivityType.postToWeibo,UIActivityType.copyToPasteboard,UIActivityType.airDrop,UIActivityType.message];
+         self.present(shareCtrl, animated: true, completion: nil)
+         
       }
    }
     /**
@@ -325,49 +319,53 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
      */
     func createDetailView(){
         if issearch {
-            
+         
             issearch = false
             self.searchOverAction()
         }
-        //
+        //..
         detailView = UIView.init(frame: textView.frame)
-        detailView?.backgroundColor = UIColor.grayColor()
+        detailView?.backgroundColor = UIColor.white
         self.view.addSubview(detailView!)
-        //
-        let backButton = UIButton.init(frame: CGRectMake(10, 10, 40, 40))
-        backButton.setTitle("返回", forState: .Normal)
-        backButton.addTarget(self, action: #selector(backButtonClick), forControlEvents: .TouchUpInside)
+        //..
+        let backButton = UIButton.init(frame: CGRect(x: 10, y: 10, width: 40, height: 40))
+        backButton.setTitle("返回", for: UIControlState())
+        backButton.setTitleColor(UIColor.black, for: .normal)
+        backButton.addTarget(self, action: #selector(backButtonClick), for: .touchUpInside)
         detailView!.addSubview(backButton)
-        //
-        let  updateButton = UIButton.init(frame: CGRectMake(kScreenWidth - 150, 10, 80, 40))
-        updateButton.setTitle("修改完成", forState: .Normal)
-        updateButton.addTarget(self, action: #selector(updateButtonClick), forControlEvents: .TouchUpInside)
+        //..
+        let  updateButton = UIButton.init(frame: CGRect(x: kScreenWidth - 150, y: 10, width: 80, height: 40))
+        updateButton.setTitle("修改完成", for: UIControlState())
+        updateButton.setTitleColor(UIColor.black, for: .normal)
+        updateButton.addTarget(self, action: #selector(updateButtonClick), for: .touchUpInside)
         detailView!.addSubview(updateButton)
-        //
-        let editButton = UIButton.init(frame: CGRectMake(kScreenWidth - 40, 10, 40, 40))
-        editButton.setTitle("新增", forState: .Normal)
-        editButton.addTarget(self, action: #selector(buttonClick), forControlEvents: .TouchUpInside)
+        //..
+        let editButton = UIButton.init(frame: CGRect(x: kScreenWidth - 40, y: 10, width: 40, height: 40))
+        editButton.setTitle("新增", for: UIControlState())
+        editButton.setTitleColor(UIColor.black, for: .normal)
+        editButton.addTarget(self, action: #selector(buttonClick), for: .touchUpInside)
         detailView!.addSubview(editButton)
         self.detailView!.addSubview(self.textView)
-        self.detailView!.hidden = false
+        self.detailView!.isHidden = false
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             
-            self.textView.frame = CGRectMake(0, 60, kScreenWidth, kScreenHeight - 80)
-        }
-        self.detailView?.frame = CGRectMake(0, 20, kScreenWidth, kScreenHeight - 20)
-      
-    }
-    
+            self.textView.frame = CGRect(x: 0, y: 60, width: kScreenWidth, height: kScreenHeight - 80)
+        }) 
+        self.detailView?.frame = CGRect(x: 0, y: 20, width: kScreenWidth, height: kScreenHeight - 20)
+   }
+    /**
+        修改选中内容
+    */
     func updateButtonClick(){
       
         if currentRow > -1 && self.textView.text != "" && self.textView.text != self.array[currentRow] as? String {
             self.array[currentRow] = self.textView.text
-            let indexPath = NSIndexPath.init(forRow: currentRow, inSection: 0)
+            let indexPath = IndexPath.init(row: currentRow, section: 0)
             let indexPathArr = NSArray.init(object: indexPath)
-            self.tableView.reloadRowsAtIndexPaths(indexPathArr as! [NSIndexPath], withRowAnimation: .None)
+            self.tableView.reloadRows(at: indexPathArr as! [IndexPath], with: .none)
             
-            array.writeToFile(self.readPlist(), atomically: true)
+            array.write(toFile: self.readPlist(), atomically: true)
         }else{
         
             self.showTip("未修改")
@@ -380,66 +378,68 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
      */
     func backButtonClick(){
         self.textView.endEditing(false)
-         UIView.animateWithDuration(0.5, animations: {
-            self.textView.frame = CGRectMake(10, 60, kScreenWidth - 20, 100)
+         UIView.animate(withDuration: 0.5, animations: {
+            self.textView.frame = CGRect(x: 10, y: 60, width: kScreenWidth - 20, height: 100)
             self.view.addSubview(self.textView)
 
-            }) { (true) in
+            }, completion: { (true) in
             
-                self.textView.setContentOffset(CGPointMake(0, 0), animated: true)
-        }
+                self.textView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        }) 
 
         self.detailView?.removeFromSuperview()
-        self.detailView?.hidden = true
+        self.detailView?.isHidden = true
     
     }
-    
     /**
         键盘改变事件
      */
-    func keyboardWillChange(info: NSNotification){
+    func keyboardWillChange(_ info: Notification){
       
-        if (self.detailView?.hidden == true) || (self.detailView == nil){
+        if (self.detailView?.isHidden == true) || (self.detailView == nil){
          
-         if info.name == UIKeyboardWillHideNotification {
-            self.textView.editable = false
-            self.textView.dataDetectorTypes = UIDataDetectorTypes.All
-            self.textView.selectable = true
+         if info.name == NSNotification.Name.UIKeyboardWillHide {
+            self.dataDetector()
          }
             return
         }
         
-        let keyboardinfo = info.userInfo![UIKeyboardFrameBeginUserInfoKey]
+        let keyboardinfo = (info as NSNotification).userInfo![UIKeyboardFrameBeginUserInfoKey]
         
-        let keyboardheight:CGFloat = (keyboardinfo?.CGRectValue.size.height)!
+        let keyboardheight:CGFloat = ((keyboardinfo as AnyObject).cgRectValue.size.height)
         
-        if info.name == UIKeyboardWillShowNotification {
-            UIView.animateWithDuration(0.25) {
-                self.textView.frame = CGRectMake(0, 60, kScreenWidth, kScreenHeight - keyboardheight - 80)
-            }
+        if info.name == NSNotification.Name.UIKeyboardWillShow {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.textView.frame = CGRect(x: 0, y: 60, width: kScreenWidth, height: kScreenHeight - keyboardheight - 80)
+            }) 
             
-        }else if info.name == UIKeyboardWillHideNotification {
+        }else if info.name == NSNotification.Name.UIKeyboardWillHide {
         
-         UIView.animateWithDuration(0.25, animations: {
-            self.textView.frame = CGRectMake(0, 60, kScreenWidth, kScreenHeight - 80)
+         UIView.animate(withDuration: 0.25, animations: {
+            self.textView.frame = CGRect(x: 0, y: 60, width: kScreenWidth, height: kScreenHeight - 80)
 
             }, completion: { (true) in
-               self.textView.editable = false
-               self.textView.dataDetectorTypes = UIDataDetectorTypes.All
-               self.textView.selectable = true
+               self.dataDetector()
          })
          
         }
-
     }
-
+    /**
+        特殊字符事件
+    */
+    func dataDetector(){
+      self.textView.isEditable = false
+      self.textView.dataDetectorTypes = UIDataDetectorTypes.all
+      self.textView.isSelectable = true
+   
+   }
     /**
         读取文件目录
      */
     func readPlist() -> String{
     
         let home = NSHomeDirectory()
-        let filepath = home.stringByAppendingString("/Documents/file.plist")
+        let filepath = home + "/Documents/file.plist"
         return filepath;
     }
     

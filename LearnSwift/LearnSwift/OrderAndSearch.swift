@@ -11,7 +11,7 @@ import Foundation
 /**
   判断字符串是否为中英文
  */
-    func isChineseOrEnglish(text : String) -> Bool {
+func isChineseOrEnglish(_ text : String) -> Bool {
     
         if text.isEmpty || text == "" {
             return false
@@ -21,14 +21,14 @@ import Foundation
         
         let pred = NSPredicate.init(format: "SELF MATCHES %@",textRegex)
     
-        return pred.evaluateWithObject(text)
+        return pred.evaluate(with: text)
     }
 
 
 /**
  *  将中文数组转换为拼音数组
  */
-public func turnLetter(chineseArr : NSArray) -> NSArray {
+public func turnLetter(_ chineseArr : NSArray) -> NSArray {
     if chineseArr.count == 0 {
         return NSArray.init(objects: "")
     }
@@ -36,14 +36,14 @@ public func turnLetter(chineseArr : NSArray) -> NSArray {
     let letterArr = NSMutableArray()
     for i in 0..<chineseArr.count {
         let text = chineseArr[i]
-        let ms = NSMutableString.init(string: String(text))
+        let ms = NSMutableString.init(string: String(describing: text))
         
         if CFStringTransform(ms, nil, kCFStringTransformToLatin, false) {
             //含有声调
         }
         if CFStringTransform(ms, nil, kCFStringTransformToLatin, false) {
             //不含声调
-            letterArr.addObject(ms)
+            letterArr.add(ms)
         }
         
     }
@@ -57,17 +57,17 @@ public func turnLetter(chineseArr : NSArray) -> NSArray {
  *
  *  @return 排好序的数组
  */
-public func letterOrderArray(array : NSArray) ->NSArray{
+public func letterOrderArray(_ array : NSArray) ->NSArray{
 
     if array.count == 0 {
         return NSArray.init(objects: "")
     }
     let letterArr = turnLetter(array)
     let letterDic = NSDictionary.init(objects: array as [AnyObject], forKeys: letterArr as! [NSCopying])
-    let arr = letterArr.sortedArrayUsingSelector(#selector(NSString.compare(_:)))
+    let arr = letterArr.sortedArray(using: #selector(NSString.compare(_:)))
     let order = NSMutableArray()
     for i in 0..<arr.count {
-        order.addObject(letterDic.objectForKey(arr[i])!)
+        order.add(letterDic.object(forKey: arr[i])!)
     }
     
    return order
@@ -81,7 +81,7 @@ public func letterOrderArray(array : NSArray) ->NSArray{
  *
  *  @return 所有搜索的结果
  */
-public func searchTextWithArray(textArray : NSArray, search text : String) ->(searchResult:NSArray, dictionary: NSMutableDictionary){
+public func searchTextWithArray(_ textArray : NSArray, search text : String) ->(searchResult:NSArray, dictionary: NSMutableDictionary){
     if textArray.count == 0 || text == ""{
         return (NSArray(),NSMutableDictionary())
     }
@@ -92,16 +92,16 @@ public func searchTextWithArray(textArray : NSArray, search text : String) ->(se
     let searchDic = NSMutableDictionary()
     var num = 0
     for i in 0..<textArray.count {
-        let chineseRange = textArray[i].rangeOfString(text , options: .CaseInsensitiveSearch)
-        let letterRange = letterArr[i].rangeOfString(text, options: .CaseInsensitiveSearch)
+        let chineseRange = (textArray[i] as AnyObject).range(of: text , options: .caseInsensitive)
+        let letterRange = (letterArr[i] as AnyObject).range(of: text, options: .caseInsensitive)
         if chineseRange.location != NSNotFound {
-            searchResult.addObject(textArray[i])
+            searchResult.add(textArray[i])
             searchDic.setValue("\(i)", forKey: "\(num)")
             num += 1
 
         }else if(letterRange.location != NSNotFound){
         
-        searchResult.addObject(letterDic.objectForKey(letterArr[i])!)
+        searchResult.add(letterDic.object(forKey: letterArr[i])!)
             searchDic.setValue("\(i)", forKey: "\(num)")
             num += 1
 
@@ -112,11 +112,6 @@ public func searchTextWithArray(textArray : NSArray, search text : String) ->(se
     
 }
 
-
-
-/**
- *  匹配字符串中的网址
- */
 
 
 

@@ -197,13 +197,16 @@
 					C34449051D52E657006707D6 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = Y6Z5PPXE9Q;
+						LastSwiftMigration = 0800;
 					};
 					C34449191D52E657006707D6 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = C34449051D52E657006707D6;
 					};
 					C34449241D52E657006707D6 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = C34449051D52E657006707D6;
 					};
 				};
@@ -409,12 +412,32 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LearnSwift",
+					"$(PROJECT_DIR)/LearnSwift/Support/Optional",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/FacebookMessengerSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/KaKaoSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/QQSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/RenRenSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/Required",
+				);
 				INFOPLIST_FILE = LearnSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwift;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/APSocialSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/SinaWeiboSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/YiXinSDK",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.www.LearnSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -425,12 +448,32 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LearnSwift",
+					"$(PROJECT_DIR)/LearnSwift/Support/Optional",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/FacebookMessengerSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/KaKaoSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/QQSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/RenRenSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/Required",
+				);
 				INFOPLIST_FILE = LearnSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwift;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/APSocialSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/SinaWeiboSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/LearnSwift/Support/PlatformSDK/YiXinSDK",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.www.LearnSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -442,6 +485,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearnSwift.app/LearnSwift";
 			};
 			name = Debug;
@@ -454,6 +498,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearnSwift.app/LearnSwift";
 			};
 			name = Release;
@@ -465,6 +510,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwiftUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = LearnSwift;
 			};
 			name = Debug;
@@ -476,6 +522,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = www.chen.LearnSwiftUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = LearnSwift;
 			};
 			name = Release;
